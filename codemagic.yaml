@@ -5,19 +5,9 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
-      vars:
-        # App Store Connect API credentials (Base64 encoded private key)
-        APP_STORE_CONNECT_KEY_BASE64: |
-          LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JR1RBY0VBTUJNQUdCeXFHU0
-          49QWdFR0NxZ0dTNDlBd0FIRUJHd2t3ZEdjbExXSnBkSE02THk5MElHNXZaR1Z5
-          WlM1amIyMHVZMjl0TUIwR0ExVUVBd3dVQzB4R1EyOXVhVzVrSUZkcGJtY3VZMjl0
-          TUIwR0ExVUVBd3dVQzB4R1EyOXVhVzVrSUZkcApibWN1WTI5dE1CMEdBMVVkRGdR
-          d0VCL3dRRUF3SUZvREFUQmdOVkJBTVRFMlY1WlNCMGFHVnRZVzVqYjIwdVkyOXR
-          NQjBHQTFVZERnUVdCQlNKZEdWemRBbHNKbk4xYldKbGNpQkRRVEFlRncweU1EQ
-          kFNaTAwTVRBMU5ERXlOVFl3TmpnME1Gb1hEVEkzTURFMk1Ea3hNREF3TURFME1Gb1hEVEU1TkRRMU5qWXpOakV6T0MweE1Gb1hEVEU1TkRRMU5qWXpOakV6T0MweE1Gb1hEVEU1TkRRMQ==
-        APP_STORE_CONNECT_KEY_ID: "7RG39ZT522"
-        APP_STORE_CONNECT_ISSUER_ID: "6cb3bc62-ae2d-48bc-adb7-de31d9a3ce32"
-        BUNDLE_ID: "com.sanad.edu"
+      groups:
+        - appstore_credentials  # هنا جميع مفاتيح App Store Connect
+        - ios_config            # هنا bundle ID وأي إعدادات iOS أخرى
     scripts:
       - name: Install dependencies
         script: |
@@ -31,8 +21,8 @@ workflows:
       app_store_connect:
         enable: true
         api_key:
-          key_id: $APP_STORE_CONNECT_KEY_ID
+          key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
           issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-          private_key: $APP_STORE_CONNECT_KEY_BASE64
+          private_key: $APP_STORE_CONNECT_PRIVATE_KEY
         bundle_id: $BUNDLE_ID
         submit_for_review: true
