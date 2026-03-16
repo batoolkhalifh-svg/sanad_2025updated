@@ -1,6 +1,6 @@
 workflows:
-  default-workflow:
-    name: Build Sanad 2025
+  ios-workflow:
+    name: Build Sanad Qatar iOS
     max_build_duration: 60
     environment:
       flutter: stable
@@ -9,12 +9,8 @@ workflows:
       - name: Install dependencies
         script: |
           flutter pub get
-      - name: Build APK
-        script: |
-          flutter build apk --release
       - name: Build iOS
         script: |
           flutter build ios --release --no-codesign
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
       - build/ios/ipa/*.ipa
