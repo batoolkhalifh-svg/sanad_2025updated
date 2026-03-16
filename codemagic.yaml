@@ -1,10 +1,17 @@
 workflows:
-  ios-workflow:
-    name: Build Sanad Qatar iOS
+  ios-release:
+    name: Build Sanad 2025 iOS
     max_build_duration: 60
     environment:
       flutter: stable
       xcode: latest
+      vars:
+        # App Store Connect API credentials
+        APP_STORE_CONNECT_KEY_ID: "J87AMH75V6"          # من الـ API Key
+        APP_STORE_CONNECT_ISSUER_ID: "6cb3bc62-ae2d-48bc-adb7-de31d9a3ce32" # Issuer ID
+        APP_STORE_CONNECT_PRIVATE_KEY: "sanad_key.p8"   # اسم ملف الـ .p8 اللي حملتيه
+        # Bundle ID الجديد
+        BUNDLE_ID: "com.example.sanad2025"
     scripts:
       - name: Install dependencies
         script: |
@@ -14,3 +21,12 @@ workflows:
           flutter build ios --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        enable: true
+        api_key:
+          key_id: $APP_STORE_CONNECT_KEY_ID
+          issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+          private_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        bundle_id: $BUNDLE_ID
+        submit_for_review: true
