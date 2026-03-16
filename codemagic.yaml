@@ -9,9 +9,9 @@ workflows:
         # App Store Connect API credentials
         APP_STORE_CONNECT_KEY_ID: "7RG39ZT522"          # من الـ API Key
         APP_STORE_CONNECT_ISSUER_ID: "6cb3bc62-ae2d-48bc-adb7-de31d9a3ce32" # Issuer ID
-        APP_STORE_CONNECT_PRIVATE_KEY: "AuthKey_7RG39ZT522.p8"   # اسم ملف الـ .p8 اللي حملتيه
+        APP_STORE_CONNECT_PRIVATE_KEY: "ios/keys/AuthKey_7RG39ZT522.p8"   # اسم ملف الـ .p8 اللي حملتيه
         # Bundle ID الجديد
-        BUNDLE_ID: "com.example.sanad2025"
+        BUNDLE_ID: "com.sanad.edu"
     scripts:
       - name: Install dependencies
         script: |
