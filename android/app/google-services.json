@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "927278320990",
+    "project_id": "sanad-2025-df198",
+    "storage_bucket": "sanad-2025-df198.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927278320990:android:61f465cb45d51f2273d3cf",
+        "android_client_info": {
+          "package_name": "com.sanad_2025.qa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYoCOnkPbMfFvfoNmY2aMMwNXUftPgymM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

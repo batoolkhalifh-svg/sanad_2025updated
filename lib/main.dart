@@ -18,27 +18,36 @@ import 'core/network/dio_client.dart';
 import 'firebase_options.dart';
 import 'package:sanad_2025/core/network/dio_client.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    // تجاهل الخطأ إذا كان Firebase مهيأ مسبقًا
+    debugPrint('Firebase already initialized: $e');
+  }
+
   await FireBaseOperations.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
   await GitIt.initGitIt();
   DioClient.init();
+
   runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<AppLanguage>(create: (_) => AppLanguage()),
-          ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-          ChangeNotifierProvider<FontProvider>(create: (_) => FontProvider()),
-        ],
-        child: const EntryPoint(),
-      )
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AppLanguage>(create: (_) => AppLanguage()),
+        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider<FontProvider>(create: (_) => FontProvider()),
+      ],
+      child: const EntryPoint(),
+    ),
   );
 }
-
 
 class EntryPoint extends StatelessWidget {
   const EntryPoint({Key? key}) : super(key: key);
@@ -47,19 +56,21 @@ class EntryPoint extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLan = Provider.of<AppLanguage>(context);
     final appTheme = Provider.of<ThemeProvider>(context);
+
+    // جلب الإعدادات عند بداية التطبيق
     appLan.fetchLocale();
     appTheme.fetchTheme();
 
     return ScreenUtilInit(
-      designSize: const Size(428,890),
-      builder:(_,__)=> MaterialApp.router(
+      designSize: const Size(428, 890),
+      builder: (_, __) => MaterialApp.router(
         scrollBehavior: MyCustomScrollBehavior(),
         routerConfig: GoRouterConfig.router,
         debugShowCheckedModeBanner: false,
         title: 'سند',
         locale: Locale(appLan.appLang.name),
         theme: appTheme.appThemeMode?.copyWith(
-            scaffoldBackgroundColor: ThemeClass.of(context).background,
+          scaffoldBackgroundColor: ThemeClass.of(context).background,
           primaryColor: ThemeClass.of(context).primaryColor,
           colorScheme: ThemeData().colorScheme.copyWith(
             primary: ThemeClass.of(context).primaryColor,
@@ -72,7 +83,7 @@ class EntryPoint extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           DefaultCupertinoLocalizations.delegate,
-          DefaultMaterialLocalizations.delegate
+          DefaultMaterialLocalizations.delegate,
         ],
       ),
     );
@@ -80,11 +91,9 @@ class EntryPoint extends StatelessWidget {
 }
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  // Override behavior methods and getters like dragDevices
   @override
   Set<PointerDeviceKind> get dragDevices => {
     PointerDeviceKind.touch,
     PointerDeviceKind.mouse,
   };
 }
-

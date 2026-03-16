@@ -2,12 +2,20 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services") // لتفعيل Firebase
 }
 
 android {
     namespace = "com.sanad_2025.qa"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 36 // يمكنك تغييره حسب Flutter SDK
+
+    defaultConfig {
+        applicationId = "com.sanad_2025.qa"
+        minSdk = flutter.minSdkVersion
+        targetSdk = 36
+        versionCode = 3
+        versionName = "1.0.2"
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -15,18 +23,9 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "11"
     }
 
-    defaultConfig {
-        applicationId = "com.sanad_2025.qa"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
-    }
-
-    // ⚡ تعريف signingConfigs خارج buildTypes
     signingConfigs {
         create("release") {
             storeFile = file("upload-keystore.jks")
@@ -37,12 +36,16 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false // يمكنك تفعيل ProGuard إذا أردت
+            isMinifyEnabled = false
             isShrinkResources = false
         }
     }
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 }
 
 flutter {
