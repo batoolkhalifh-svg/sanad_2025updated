@@ -2,6 +2,7 @@ workflows:
   ios-release:
     name: Build Sanad 2025 iOS
     max_build_duration: 60
+
     environment:
       flutter: stable
       xcode: latest
@@ -10,11 +11,18 @@ workflows:
         - ios_config
 
     scripts:
-      - name: Install dependencies
+      - name: Install Flutter dependencies
         script: |
           flutter pub get
 
-      - name: Build iOS
+      - name: Update CocoaPods and Install iOS Pods
+        script: |
+          cd ios
+          pod repo update
+          pod install
+          cd ..
+
+      - name: Build iOS app
         script: |
           flutter build ios --release --no-codesign
 
