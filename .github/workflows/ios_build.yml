@@ -1,0 +1,38 @@
+name: iOS Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build_ios:
+    name: Build iOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.0' # ضع نسخة Flutter اللي تستخدمها
+
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods
+          pod --version
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Install iOS Pods
+        run: |
+          cd ios
+          pod install
+          cd ..
+
+      - name: Build iOS (Release)
+        run: flutter build ios --release --no-codesign
